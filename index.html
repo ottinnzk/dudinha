@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Minha Dudinha 💎</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg:           #141414;
+            --stone:        #7D7D7D;
+            --stone-dark:   #4A4A4A;
+            --stone-light:  #AEAEAE;
+            --grass:        #5B8731;
+            --grass-light:  #8BC34A;
+            --dirt:         #7A5230;
+            --diamond:      #4ACFFF;
+            --gold:         #FFD700;
+            --redstone:     #FF3322;
+            --wood:         #7C5429;
+            --wood-light:   #A0703A;
+            --enchant:      #5555FF;
+            --enchant-light:#8888FF;
+            --text:         #FFFFFF;
+            --text-dim:     #CCCCCC;
+            --text-dark:    #3F3F3F;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'VT323', monospace;
+            background-color: var(--bg);
+            background-image:
+                repeating-linear-gradient(0deg, transparent, transparent 31px, rgba(255,255,255,0.025) 31px, rgba(255,255,255,0.025) 32px),
+                repeating-linear-gradient(90deg, transparent, transparent 31px, rgba(255,255,255,0.025) 31px, rgba(255,255,255,0.025) 32px);
+            min-height: 100vh;
+            overflow-x: hidden;
+            color: var(--text);
+        }
+
+        #loading {
+            position: fixed;
+            inset: 0;
+            background: #141414;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 28px;
+            transition: opacity 0.5s ease;
+        }
+        #loading.done { opacity: 0; pointer-events: none; }
+        .loading-title {
+            font-family: 'Press Start 2P', monospace;
+            font-size: clamp(1rem, 3.5vw, 1.5rem);
+            color: var(--diamond);
+            text-shadow: 3px 3px var(--stone-dark);
+            text-align: center;
+            line-height: 2;
+        }
+        .loading-bar-wrap {
+            width: 280px; height: 20px;
+            background: var(--stone-dark);
+            border: 3px solid #000;
+            box-shadow: inset 2px 2px 0 var(--stone-light), inset -2px -2px 0 var(--stone-dark), 3px 3px 0 #000;
+            overflow: hidden;
+        }
+        .loading-bar-fill {
+            height: 100%; width: 0%;
+            background: var(--grass);
+            box-shadow: inset 0 4px 0 var(--grass-light);
+            animation: load-progress 2s ease-in-out forwards;
+        }
+        @keyframes load-progress {
+            0% { width: 0%; } 30% { width: 45%; } 65% { width: 75%; } 100% { width: 100%; }
+        }
+        .loading-sub {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 0.5rem; color: var(--stone);
+            animation: blink 1s step-end infinite;
+        }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+        .container { max-width: 860px; margin: 0 auto; padding: 0 20px 60px; position: relative; z-index: 1; }
+
+        .grass-strip { width: 100%; height: 14px; background: var(--grass); box-shadow: 0 4px 0 var(--dirt); margin-bottom: 48px; }
+
+        .header { text-align: center; margin-bottom: 40px; animation: fadeInDown 0.7s ease both; }
+        .header h1 {
+            font-family: 'Press Start 2P', monospace;
+            font-size: clamp(1rem, 3vw, 1.6rem);
+            color: var(--gold);
+            text-shadow: 3px 3px #7A5800, 0 0 24px rgba(255,215,0,0.25);
+            line-height: 1.8; margin-bottom: 16px;
+        }
+        .header p { font-size: 1.4rem; color: var(--stone-light); letter-spacing: 1px; }
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-24px); } to { opacity: 1; transform: translateY(0); } }
+
+        .mc-panel {
+            background: #8B8B8B; border: 4px solid #000;
+            box-shadow: inset 4px 4px 0 #C6C6C6, inset -4px -4px 0 #3C3C3C;
+            padding: 28px 24px; margin: 28px 0;
+        }
+        .mc-panel-title {
+            font-family: 'Press Start 2P', monospace;
+            font-size: clamp(0.65rem, 2vw, 0.9rem);
+            color: var(--text-dark); margin-bottom: 18px;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .mc-panel-title::before { content: '🎁'; font-size: 1.1rem; }
+
+        .love-message {
+            background: #C6C6C6; border: 3px solid #000;
+            box-shadow: inset 2px 2px 0 #3C3C3C, inset -2px -2px 0 #FFFFFF;
+            padding: 18px;
+            font-size: clamp(1.1rem, 2.5vw, 1.45rem);
+            line-height: 1.8; color: #1C1C1C;
+        }
+        .love-message p + p { margin-top: 10px; }
+
+        .mc-btn {
+            display: block; width: 100%; max-width: 420px; margin: 24px auto 0;
+            background: var(--stone); color: var(--text);
+            font-family: 'Press Start 2P', monospace;
+            font-size: clamp(0.5rem, 1.5vw, 0.65rem);
+            padding: 15px 20px; border: 4px solid #000; cursor: pointer;
+            text-align: center; text-shadow: 2px 2px #3F3F3F;
+            box-shadow: inset 4px 4px 0 var(--stone-light), inset -4px -4px 0 var(--stone-dark);
+            transition: background 0.1s; line-height: 1.7;
+        }
+        .mc-btn:hover { background: #7799CC; box-shadow: inset 4px 4px 0 #99BBEE, inset -4px -4px 0 #4455AA; }
+        .mc-btn:active { box-shadow: inset -4px -4px 0 var(--stone-light), inset 4px 4px 0 var(--stone-dark); transform: translateY(2px); }
+        .mc-btn:disabled { opacity: 0.55; cursor: default; }
+
+        .special-message {
+            display: none; margin-top: 20px;
+            background: var(--enchant); border: 4px solid #000;
+            box-shadow: inset 4px 4px 0 var(--enchant-light), inset -4px -4px 0 #3333AA;
+            padding: 20px 18px;
+        }
+        .special-message.show { display: block; animation: fadeInUp 0.5s ease; }
+        .special-message h3 {
+            font-family: 'Press Start 2P', monospace;
+            font-size: clamp(0.55rem, 1.8vw, 0.75rem);
+            color: var(--diamond); text-shadow: 2px 2px #2222AA; margin-bottom: 14px;
+        }
+        .special-message p { font-size: clamp(1.1rem, 2.5vw, 1.4rem); line-height: 1.8; color: #CCDDFF; }
+        .special-message p + p { margin-top: 10px; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* ================================================
+           MC-GIFT — Bloco do presente (conta Minecraft)
+           ================================================ */
+        .mc-gift {
+            border: 4px solid var(--gold);
+            background: #222;
+            box-shadow: inset 4px 4px 0 #444, inset -4px -4px 0 #000, 4px 4px 0 #000;
+            margin: 28px 0;
+            overflow: hidden;
+        }
+        .mc-gift-header {
+            background: var(--gold);
+            color: #000;
+            font-family: 'Press Start 2P', monospace;
+            font-size: clamp(0.55rem, 1.8vw, 0.75rem);
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .mc-gift-body  { padding: 18px 16px; display: flex; flex-direction: column; gap: 10px; }
+        .mc-gift-title { font-family: 'Press Start 2P', monospace; font-size: clamp(0.5rem, 1.5vw, 0.65rem); color: var(--diamond); line-height: 1.8; }
+        .mc-gift-line  { font-size: clamp(1.1rem, 2.5vw, 1.4rem); color: var(--text-dim); }
+        .mc-gift-val   { color: var(--text); font-style: italic; }
+        .mc-gift-obs   { font-family: 'Press Start 2P', monospace; font-size: 0.42rem; color: var(--stone); line-height: 1.8; }
+
+        /* ================================================
+           MC-QUIZ — Baú trancado com pergunta secreta
+           ================================================ */
+        .mc-quiz {
+            border: 4px solid var(--stone-light);
+            background: #222;
+            box-shadow: inset 4px 4px 0 #444, inset -4px -4px 0 #000, 4px 4px 0 #000;
+            margin: 28px 0;
+            overflow: hidden;
+        }
+        .mc-quiz-header {
+            background: var(--stone);
+            color: #000;
+            font-family: 'Press Start 2P', monospace;
+            font-size: clamp(0.55rem, 1.8vw, 0.75rem);
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .mc-quiz-body { padding: 18px 16px; display: flex; flex-direction: column; gap: 14px; }
+        .mc-quiz-question {
+            font-family: 'Press Start 2P', monospace;
+            font-size: clamp(0.5rem, 1.5vw, 0.65rem);
+            color: var(--diamond);
+            line-height: 2;
+        }
+        .mc-quiz-input-row { display: flex; gap: 10px; align-items: stretch; }
+        .mc-quiz-input {
+            flex: 1;
+            background: #111;
+            border: 3px solid #000;
+            box-shadow: inset 2px 2px 0 #000, inset -2px -2px 0 var(--stone-dark);
+            color: var(--text);
+            font-family: 'VT323', monospace;
+            font-size: 1.3rem;
+            padding: 10px 12px;
+            outline: none;
+        }
+        .mc-quiz-input:focus { border-color: var(--diamond); }
+        .mc-quiz-btn { margin: 0; max-width: 100px; padding: 10px 14px; }
+        .mc-quiz-feedback {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 0.5rem;
+            line-height: 1.8;
+            min-height: 1.2rem;
+        }
+        .mc-quiz-feedback.wrong { color: var(--redstone); }
+        .mc-quiz-feedback.right { color: var(--grass-light); }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%       { transform: translateX(-6px); }
+            40%       { transform: translateX(6px); }
+            60%       { transform: translateX(-4px); }
+            80%       { transform: translateX(4px); }
+        }
+
+        .gallery-label {
+            font-family: 'Press Start 2P', monospace;
+            font-size: clamp(0.55rem, 1.8vw, 0.8rem);
+            color: var(--text-dim); text-align: center;
+            margin: 48px 0 16px; text-shadow: 2px 2px #000;
+        }
+        .photo-gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 40px; }
+        .painting {
+            aspect-ratio: 1; background: #2C1A0A; border: 4px solid #000;
+            box-shadow: inset 4px 4px 0 var(--wood-light), inset -4px -4px 0 #3C2010;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            font-size: 2rem; text-align: center; cursor: pointer; transition: filter 0.15s; overflow: hidden;
+        }
+        .painting:hover { filter: brightness(1.35); }
+        .painting small {
+            font-family: 'Press Start 2P', monospace;
+            font-size: clamp(0.3rem, 1vw, 0.42rem);
+            color: var(--stone); margin-top: 8px; line-height: 1.8;
+        }
+        .painting img { width: 100%; height: 100%; object-fit: cover; }
+
+        .footer { text-align: center; padding: 40px 0 20px; border-top: 4px solid var(--grass); box-shadow: 0 -4px 0 var(--dirt); }
+        .footer p { font-family: 'Press Start 2P', monospace; font-size: clamp(0.42rem, 1.3vw, 0.56rem); color: var(--text-dim); line-height: 2.8; text-shadow: 1px 1px #000; }
+        .footer .version { color: var(--stone); font-size: 0.4rem; }
+        .heart { color: var(--redstone); display: inline-block; animation: heartbeat 1s ease-in-out infinite; }
+        @keyframes heartbeat { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.3); } }
+
+        #particles { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+        .particle {
+            position: absolute; bottom: -30px; opacity: 0;
+            animation: rise var(--dur, 9s) linear forwards;
+            pointer-events: none; font-size: 1rem; user-select: none;
+        }
+        @keyframes rise {
+            0%   { transform: translateY(0) rotate(0deg); opacity: 0.85; }
+            80%  { opacity: 0.5; }
+            100% { transform: translateY(-105vh) rotate(360deg); opacity: 0; }
+        }
+
+        #achievement {
+            position: fixed; top: 16px; right: -400px; z-index: 9998;
+            background: #222; border: 3px solid var(--gold);
+            padding: 10px 14px; display: flex; align-items: center; gap: 12px;
+            transition: right 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            max-width: 300px; box-shadow: 4px 4px 0 #000;
+        }
+        #achievement.show { right: 16px; }
+        .ach-icon  { font-size: 2rem; flex-shrink: 0; }
+        .ach-body  { flex: 1; min-width: 0; }
+        .ach-label { font-family: 'Press Start 2P', monospace; font-size: 0.42rem; color: var(--gold); display: block; margin-bottom: 5px; }
+        .ach-name  { font-family: 'Press Start 2P', monospace; font-size: 0.5rem; color: var(--text); display: block; line-height: 1.7; word-break: break-word; }
+
+        @media (max-width: 480px) {
+            .mc-panel { padding: 18px 14px; }
+            .love-message { font-size: 1.15rem; }
+            .photo-gallery { gap: 7px; }
+            .painting { font-size: 1.4rem; }
+            #achievement { max-width: 220px; top: 10px; }
+            .ach-label { font-size: 0.36rem; }
+            .ach-name  { font-size: 0.42rem; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="loading">
+        <div class="loading-title">Otto &amp;<br>Dudinha</div>
+        <div class="loading-bar-wrap"><div class="loading-bar-fill"></div></div>
+        <div class="loading-sub">carregando mundo...</div>
+    </div>
+
+    <div id="particles"></div>
+
+    <div id="achievement" role="status" aria-live="polite">
+        <div class="ach-icon" id="ach-icon">💎</div>
+        <div class="ach-body">
+            <span class="ach-label">Achievement Get!</span>
+            <span class="ach-name" id="ach-name">...</span>
+        </div>
+    </div>
+
+    <div class="container">
+
+        <div class="grass-strip"></div>
+
+        <header class="header">
+            <h1>Para <br>Dudinha 💛</h1>
+            <p>crafted by Otto, com amor ❤️</p>
+        </header>
+
+        <div class="mc-panel">
+            <div class="mc-panel-title">Inventário do Coração</div>
+            <div class="love-message">
+                <p>Dudinha, você sabe que não sou de falar muito mas isso aqui já diz bastante. 🤍
+                <p>Todo mundo odeia o Chris até dormir, jogar junto no PS4, filmes e séries aleatórios que a gente assiste só pra assistir junto... são essas coisas que fazem tudo valer.
+                <p>Não preciso de muito pra ser feliz. Só de você por perto.
+                <p>Te amo. 🎮❤️🌍</p>
+            </div>
+
+            <button class="mc-btn" id="surpriseBtn" onclick="showSurprise()">
+                🎁 [ ABRIR BAÚ SECRETO ] 🎁
+            </button>
+
+            <div class="special-message" id="specialMessage">
+                <h3>💙 Mensagem Secreta Desbloqueada 💙</h3>
+                <p>Momo, esse presente foi feito do zero por mim, porque você merece mais do que qualquer item encantado do jogo. 🪄</p>
+                <p>Neste Dia dos Namorados, quero que saiba que cada momento com você vale mais do que qualquer tesouro. Feliz Dia dos Namorados, meu amor! 🎮❤️</p>
+            </div>
+        </div>
+
+        <!-- QUIZ — Easter egg que revela a conta Minecraft -->
+        <div class="mc-quiz" id="mcQuiz">
+            <div class="mc-quiz-header">🔒 &nbsp;Baú Trancado — Responda para Abrir</div>
+            <div class="mc-quiz-body">
+                <p class="mc-quiz-question">
+                    <!-- ✏️ TROQUE PELA SUA PERGUNTA AQUI -->
+                    Qual a palavra mais usada por nós?
+                </p>
+                <div class="mc-quiz-input-row">
+                    <input
+                        class="mc-quiz-input"
+                        id="quizInput"
+                        type="text"
+                        placeholder="sua resposta..."
+                        autocomplete="off"
+                        onkeydown="if(event.key==='Enter') checkQuiz()"
+                    >
+                    <button class="mc-btn mc-quiz-btn" onclick="checkQuiz()">[ OK ]</button>
+                </div>
+                <p class="mc-quiz-feedback" id="quizFeedback"></p>
+            </div>
+        </div>
+
+        <!-- PRESENTE — fica escondido até acertar o quiz -->
+        <div class="mc-gift" id="mcGift" style="display:none">
+            <div class="mc-gift-header">🏆 &nbsp;Achievement Get! — Presente Desbloqueado</div>
+            <div class="mc-gift-body">
+                <p class="mc-gift-title">Minecraft: Java & Bedrock Edition 🎮</p>
+                <!-- ✏️ TROQUE PELO EMAIL E SENHA REAIS AQUI -->
+                <p class="mc-gift-line">📧 Email: <span class="mc-gift-val">aranho8@outlook.com</span></p>
+                <p class="mc-gift-line">🔑 Senha: <span class="mc-gift-val">game@2645</span></p>
+                <p class="mc-gift-obs">⚠ CODIGO: ZaNhZ4</p>
+            </div>
+        </div>
+
+        <p class="gallery-label">[ GALERIA DE MEMÓRIAS ]</p>
+        <section class="photo-gallery">
+            <!-- Quando tiver fotos: troca o conteúdo de cada .painting por <img src="img/1.jpeg" alt="..."> -->
+            <div class="painting"><img src="img1.jpeg" alt="foto 1"></div>
+            <div class="painting"><img src="img2.jpeg" alt="foto 1"></div>
+            <div class="painting"><img src="img3.jpeg" alt="foto 1"></div>
+            <div class="painting"><span>🏠</span><small>nossa<br>história</small></div>
+            <div class="painting"><img src="img4.jpeg" alt="foto 1"></div>
+            <div class="painting"><span>💎</span><small>para<br>sempre</small></div>
+        </section>
+
+        <footer class="footer">
+            <p>Crafted with <span class="heart">❤️</span> by Otto</p>
+            <p>Feliz Dia dos Namorados, Dudinha! 💛</p>
+            <p class="version">[ Minecraft Edition — v1.0 PS4 ]</p>
+        </footer>
+    </div>
+
+    <script>
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const loading = document.getElementById('loading');
+                loading.classList.add('done');
+                setTimeout(() => loading.remove(), 600);
+            }, 2300);
+        });
+
+        let achTimeout;
+        function showAchievement(icon, name) {
+            document.getElementById('ach-icon').textContent = icon;
+            document.getElementById('ach-name').textContent = name;
+            const el = document.getElementById('achievement');
+            el.classList.add('show');
+            clearTimeout(achTimeout);
+            achTimeout = setTimeout(() => el.classList.remove('show'), 4000);
+        }
+
+        let surpriseShown = false;
+        function showSurprise() {
+            if (surpriseShown) return;
+            surpriseShown = true;
+            document.getElementById('specialMessage').classList.add('show');
+            const btn = document.getElementById('surpriseBtn');
+            btn.textContent = '[ BAÚZINHO ABERTO! ] ✓';
+            btn.disabled = true;
+            showAchievement('💛', 'Você abriu o coração do Otto!');
+            for (let i = 0; i < 10; i++) setTimeout(createParticle, i * 100);
+            if (navigator.vibrate) navigator.vibrate([100, 60, 200]);
+        }
+
+        const PARTICLE_ICONS = ['💎', '⭐', '❤️', '🌿', '✨', '💛', '🌸'];
+        const MAX_PARTICLES   = 12;
+        function createParticle() {
+            const container = document.getElementById('particles');
+            if (container.children.length >= MAX_PARTICLES) return;
+            const p = document.createElement('div');
+            p.className = 'particle';
+            p.textContent = PARTICLE_ICONS[Math.floor(Math.random() * PARTICLE_ICONS.length)];
+            p.style.left = Math.random() * 100 + '%';
+            p.style.setProperty('--dur', (Math.random() * 8 + 7) + 's');
+            p.style.fontSize = (Math.random() * 0.7 + 0.65) + 'rem';
+            container.appendChild(p);
+            p.addEventListener('animationend', () => p.remove(), { once: true });
+        }
+        setInterval(createParticle, 1200);
+        for (let i = 0; i < 5; i++) setTimeout(createParticle, i * 500);
+
+        const observer = new IntersectionObserver(
+            (entries) => entries.forEach(e => {
+                if (e.isIntersecting) {
+                    e.target.style.animation = 'fadeInUp 0.6s ease forwards';
+                    observer.unobserve(e.target);
+                }
+            }),
+            { threshold: 0.08 }
+        );
+        document.querySelectorAll('.painting, .mc-panel, .mc-quiz').forEach(el => {
+            el.style.opacity = '0';
+            observer.observe(el);
+        });
+
+        let footerClicks = 0;
+
+        // ================================================
+        // QUIZ — Baú trancado
+        // ✏️ TROQUE A RESPOSTA ABAIXO PELA REAL (em minúsculo)
+        // ================================================
+        const QUIZ_RESPOSTA = 'momo';
+
+        function checkQuiz() {
+            const input    = document.getElementById('quizInput');
+            const feedback = document.getElementById('quizFeedback');
+            const resposta = input.value.trim().toLowerCase();
+
+            if (resposta === QUIZ_RESPOSTA) {
+                // Acertou!
+                feedback.textContent = '✓ Correto! Desbloqueando presente...';
+                feedback.className = 'mc-quiz-feedback right';
+                input.disabled = true;
+
+                setTimeout(() => {
+                    document.getElementById('mcQuiz').style.display  = 'none';
+                    const gift = document.getElementById('mcGift');
+                    gift.style.display = 'block';
+                    gift.style.animation = 'fadeInUp 0.5s ease';
+                    showAchievement('🎮', 'Presente desbloqueado!');
+                    for (let i = 0; i < 10; i++) setTimeout(createParticle, i * 80);
+                    if (navigator.vibrate) navigator.vibrate([100, 60, 200]);
+                }, 800);
+
+            } else {
+                // Errou
+                feedback.textContent = '✗ Resposta errada... tenta de novo!';
+                feedback.className = 'mc-quiz-feedback wrong';
+                input.value = '';
+                input.focus();
+                // Chacoalha o input
+                input.style.animation = 'none';
+                input.offsetHeight; // reflow
+                input.style.animation = 'shake 0.4s ease';
+            }
+        }
+        document.querySelector('.footer').addEventListener('click', () => {
+            footerClicks++;
+            if (footerClicks === 3) {
+                showAchievement('🎮', 'Easter Egg! ');
+                footerClicks = 0;
+            }
+        });
+    </script>
+</body>
+</html>
